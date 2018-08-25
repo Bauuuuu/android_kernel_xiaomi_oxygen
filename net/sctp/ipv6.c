@@ -1,8 +1,9 @@
 /* SCTP kernel implementation
  * (C) Copyright IBM Corp. 2002, 2004
  * Copyright (c) 2001 Nokia, Inc.
- * Copyright (c) 2001 La Monte H.P. Yarroll
+ * Copyright (c) 2001 La Monte H.P. Yarroll.
  * Copyright (c) 2002-2003 Intel Corp.
+ * Copyright (C) 2017 XiaoMi, Inc.
  *
  * This file is part of the SCTP kernel implementation
  *

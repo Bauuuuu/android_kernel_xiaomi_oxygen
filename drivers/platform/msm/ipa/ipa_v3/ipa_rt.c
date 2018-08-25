@@ -1743,9 +1743,15 @@ int ipa3_get_rt_tbl(struct ipa_ioc_get_rt_tbl *lookup)
 	}
 	mutex_lock(&ipa3_ctx->lock);
 	entry = __ipa3_find_rt_tbl(lookup->ip, lookup->name);
+<<<<<<< HEAD
 	if (entry && entry->cookie == IPA_RT_TBL_COOKIE) {
 		if (entry->ref_cnt == U32_MAX) {
 			IPAERR_RL("fail: ref count crossed limit\n");
+=======
+	if (entry && entry->cookie == IPA_COOKIE) {
+		if (entry->ref_cnt == U32_MAX) {
+			IPAERR("fail: ref count crossed limit\n");
+>>>>>>> 7c412528d678... Kernel: Xiaomi kernel changes for max2
 			goto ret;
 		}
 		entry->ref_cnt++;

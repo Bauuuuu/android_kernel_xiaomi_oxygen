@@ -34,6 +34,8 @@
 #include "../pinconf.h"
 #include "pinctrl-msm.h"
 #include "../pinctrl-utils.h"
+#include <linux/wakeup_reason.h>
+#include <linux/syscore_ops.h>
 
 #define MAX_NR_GPIO 300
 #define PS_HOLD_OFFSET 0x820
@@ -537,6 +539,9 @@ static void msm_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
 	unsigned i;
 
 	for (i = 0; i < chip->ngpio; i++, gpio++) {
+		/*WA: bypass TZ access only GPIOs*/
+		if ((i >= 0 && i <= 3) || (i >= 135 && i <= 138))
+			continue;
 		msm_gpio_dbg_show_one(s, NULL, chip, i, gpio);
 		seq_puts(s, "\n");
 	}
@@ -590,7 +595,6 @@ static void msm_gpio_update_dual_edge_pos(struct msm_pinctrl *pctrl,
 		pol = readl(pctrl->regs + g->intr_cfg_reg);
 		pol ^= BIT(g->intr_polarity_bit);
 		writel(pol, pctrl->regs + g->intr_cfg_reg);
-
 		val2 = readl(pctrl->regs + g->io_reg) & BIT(g->in_bit);
 		intstat = readl(pctrl->regs + g->intr_status_reg);
 		if (intstat || (val == val2))
@@ -938,6 +942,7 @@ static int msm_pinctrl_suspend(void)
 {
 	return 0;
 }
+
 
 static void msm_pinctrl_resume(void)
 {
